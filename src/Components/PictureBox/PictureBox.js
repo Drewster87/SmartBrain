@@ -1,11 +1,16 @@
 import React from 'react';
+import './PictureBox.css';
 
-const PictureBox = ({imageUrl}) => { 
+const PictureBox = ({ imageUrl, box }) => {
     return (
-        <div className='center'>
-            <img src="https://samples.clarifai.com/face-det.jpg" alt=""/>
+        <div className='center ma'>
+            <div className='absolute mt2'>
+                <img id='faceImg' src={imageUrl} alt="" />
+                <div className='bounding-box' style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }}></div>
+            </div>
         </div>
     )
 }
 
 export default PictureBox;
+

@@ -25,27 +25,39 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      imageSource: '',
-      imageUrl: ''
+      input: '',
+      imageUrl: '',
+      box: {}
     }
   }
 
+  calculateFaceLocation = (data) => {
+    const faceData = data.outputs[0].data.regions[0].region_info.bounding_box
+    const picture = document.getElementById('faceImg');
+    const width = Number(picture.width);
+    const height = Number(picture.height);
+    return {
+      leftCol: faceData.left_col * width,
+      rightCol: width - (faceData.right_col * width),
+      topRow: faceData.top_row * height,
+      bottomRow: height - (faceData.bottom_row * height)
+    }
+  }
+
+  displayFaceBox = (box) => {
+    this.setState({box: box})
+    console.log(this.state.box)
+  }
 
   onImageSrcChange = (event) => {
-    this.setState({ imageSource: event.target.value });
+    this.setState({ input: event.target.value });
   }
 
   onImageClick = () => {
-    this.setState({ imageUrl: this.state.imageSource })
-    app.models.predict("a403429f2ddf4b49b307e318f00e528b", "https://samples.clarifai.com/face-det.jpg").then(
-      function (response) {
-        // do something with response
-        console.log(response)
-      },
-      function (err) {
-        // there was an error
-      }
-    );
+    this.setState({ imageUrl: this.state.input })
+    app.models.predict("a403429f2ddf4b49b307e318f00e528b", this.state.input)
+    .then(response => this.displayFaceBox(this.calculateFaceLocation(response)))
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -57,8 +69,10 @@ class App extends Component {
         <NavBar />
         <Logo />
         <Rank />
-        <ImageBar onImageSrcChange={this.onImageSrcChange} onImageClick={this.onImageClick} />
-        <PictureBox imageUrl={this.state.imageSource} />
+        <ImageBar
+          onImageSrcChange={this.onImageSrcChange}
+          onImageClick={this.onImageClick} />
+        <PictureBox imageUrl={this.state.input} box={this.state.box} />
       </div>
     );
   }
