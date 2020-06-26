@@ -2,3 +2,21 @@ body {
   background: rgb(215,43,237);
   background: linear-gradient(90deg, rgba(215,43,237,1) 0%, rgba(0,212,255,1) 100%);
 }
+
+.App {
+  text-align: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.particles {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
