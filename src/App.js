@@ -46,7 +46,6 @@ class App extends Component {
 
   displayFaceBox = (box) => {
     this.setState({box: box})
-    console.log(this.state.box)
   }
 
   onImageSrcChange = (event) => {
