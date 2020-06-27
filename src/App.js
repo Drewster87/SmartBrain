@@ -40,6 +40,8 @@ class App extends Component {
     };
   };
 
+  // todo make box an array and use it to create multiples
+  
   displayFaceBox = (box) => {
     this.setState({ box: box });
   };
