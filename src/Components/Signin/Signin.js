@@ -5,7 +5,8 @@ class Signin extends React.Component {
     super(props);
     this.state = {
       signInEmail: '',
-      signInPassword: ''
+      signInPassword: '',
+      errorMessage: ''
     }
   }
 
@@ -32,8 +33,11 @@ class Signin extends React.Component {
     })
       .then(response => response.json())
       .then(data => {
-        if(data === 'success'){
-          this.props.onRouteChange()
+        if(data.id){
+          this.props.loadUser(data);
+          this.props.onRouteChange('home')
+        }else{
+          this.setState({ errorMessage: 'Invalid email/password' });
         }
       })
       .catch((error) => {
@@ -43,7 +47,13 @@ class Signin extends React.Component {
 
   render() {
     const { onRouteChange } = this.props;
+    let errMsg = '';
 
+    if(this.state.errorMessage === '') {
+      errMsg = '';
+    } else {
+      errMsg = this.state.errorMessage;
+    }
     return (
       <article className="br3 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
         <main className="pa4 black-80">
@@ -73,6 +83,7 @@ class Signin extends React.Component {
                   name="password"
                   id="password"
                 />
+                <p>{errMsg}</p>
               </div>
             </fieldset>
             <div className="">
